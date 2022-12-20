@@ -1,6 +1,6 @@
-const getTempFooterStat = () => {
+const getTempFooterStat = (arr) => {
   return `<section class="footer__statistics">
-  <p>130 291 movies inside</p>
+  <p>${arr} movies inside</p>
 </section>`;
 };
 

@@ -1,3 +1,36 @@
+import {getRandomItemArr, getRandomNumber} from "../utils.js";
+
+// Функция добавления шаблона жанров фильмов
+const addTempGanres = (arr) => {
+  const elements = [];
+
+  for (let item of arr) {
+    elements.push(`<span class="film-details__genre">${item}</span>`);
+  }
+
+  return elements.join(` `);
+};
+
+// Функция добавления шаблона даты
+const addDateTemp = (year) => {
+  const month = [
+    `January`,
+    `February`,
+    `March`,
+    `April`,
+    `May`,
+    `June`,
+    `July`,
+    `August`,
+    `September`,
+    `October`,
+    `November`,
+    `December`
+  ];
+
+  return `${getRandomNumber(1, 30)} ${getRandomItemArr(month)} ${year}`;
+};
+
 const getTempCardPop = (arr) => {
   const {
     fullPoster,
@@ -12,7 +45,9 @@ const getTempCardPop = (arr) => {
     duration,
     country,
     fullDescription,
+    genre
   } = arr;
+
   return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="form-details__top-container">
@@ -53,7 +88,7 @@ const getTempCardPop = (arr) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${dateCreat}</td>
+              <td class="film-details__cell">${addDateTemp(dateCreat)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>
@@ -66,9 +101,8 @@ const getTempCardPop = (arr) => {
             <tr class="film-details__row">
               <td class="film-details__term">Genres</td>
               <td class="film-details__cell">
-                <span class="film-details__genre">Drama</span>
-                <span class="film-details__genre">Film-Noir</span>
-                <span class="film-details__genre">Mystery</span></td>
+                ${addTempGanres(genre)}
+              </td>
             </tr>
           </table>
 

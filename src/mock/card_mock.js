@@ -1,4 +1,12 @@
-import {getRandomItemArr, getRandomItemsArray, getRandomNumber, getRandomNumberPoint, getNumberWithLeadZero, generateLoremText} from '../utils.js';
+import {
+  getRandomItemArr,
+  getRandomItemsArray,
+  getRandomNumber,
+  getRandomNumberPoint,
+  getNumberWithLeadZero,
+  generateLoremText,
+  getRandomTags
+} from '../utils.js';
 
 const cardTitles = [
   `The Dark Knight`,
@@ -56,7 +64,6 @@ const cartGenres = [
   `Comedy`,
   `Melodrama`
 ];
-
 const cartDirectors = [
   `Christopher Nolan`,
   `Roger Allers`,
@@ -74,7 +81,6 @@ const cartDirectors = [
   `Steven Spielberg`,
   `Frank Darabont`
 ];
-
 const cartScreenwriters = [
   `Frank Darabont`,
   `Stephen King`,
@@ -93,7 +99,6 @@ const cartScreenwriters = [
   `Olivier Nakache`,
   `Irene Mecchi`,
 ];
-
 const cartActors = [
   `Heath Ledger`,
   `Christian Bale`,
@@ -119,7 +124,6 @@ const cartActors = [
   `Liam Neeson`,
   `Tom Hanks`,
 ];
-
 const cartCountry = [
   `USA`,
   `New Zealand`,
@@ -128,7 +132,6 @@ const cartCountry = [
   `France`,
   `England`,
 ];
-
 const cartAgeRating = [
   3,
   7,
@@ -146,7 +149,7 @@ const generateCardData = () => {
     rating: getRandomNumberPoint(4, 10, 1),
     yearCreat: getRandomNumber(1988, 2022),
     duration: `${getRandomNumber(0, 3)}h ${ getNumberWithLeadZero(getRandomNumber(0, 59))}m`,
-    genre: getRandomItemArr(cartGenres),
+    genre: getRandomTags(cartGenres, 3),
     description: getRandomItemsArray(cardTextSentenses, getRandomNumber(1, 3)),
     comments: getRandomNumber(0, 10),
     fullPoster: cardImages[id],
@@ -159,7 +162,6 @@ const generateCardData = () => {
     country: getRandomItemArr(cartCountry),
     fullDescription: generateLoremText(getRandomNumber(10, 20)),
     ageRating: getRandomItemArr(cartAgeRating)
-
   };
 };
 

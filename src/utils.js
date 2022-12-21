@@ -104,6 +104,7 @@ const generateLoremText = (numSent) => {
   }
   return text.join(` `);
 };
+
 // Функция закрытия попапа карточки фильма
 const addClosePopUp = () => {
   const popUp = document.querySelector(`.film-details`);
@@ -141,6 +142,19 @@ const cleanChildElement = (cont) => {
   }
 };
 
+// Функция генерирования массива с заданной длинной, исключающая повторов
+const getRandomTags = (arr, length) => {
+  let set = new Set();
+
+  const cycle = getRandomNumber(1, length);
+
+  while (set.size !== cycle) {
+    set.add(arr[getRandomNumber(0, arr.length - 1)]);
+  }
+
+  return Array.from(set);
+};
+
 export {
   getRandomItemArr,
   getRandomItemsArray,
@@ -152,4 +166,5 @@ export {
   sortArray,
   addActiveClass,
   cleanChildElement,
+  getRandomTags
 };

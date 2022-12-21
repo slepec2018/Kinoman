@@ -20,9 +20,10 @@ const footer = document.querySelector(`.footer`);
 const footerStat = footer.querySelector(`.footer__statistics`);
 
 // Переменная количество карточек в каталоге
-const CARD_COUNT = 5;
+const CARD_COUNT = 14;
+const TASK_COUNT_PER_STEP = 5;
 
-// Массив сгенерированных карточек товаров
+// Массив сгенерированных карточек фильмов
 const cards = new Array(CARD_COUNT).fill().map(generateCardData);
 
 // Отсортированные массивы по заданным критериям
@@ -51,7 +52,7 @@ const filmCatalogCont = filmCatalog.querySelector(`.films-list__container`);
 const filmCatalogExtraConts = main.querySelectorAll(`.films-list--extra .films-list__container`);
 
 // Добавление карточек фильмов в топовые блоки каталога
-for (let i = 0; i < 2; i++) {
+for (let i = 0; i < (cards.length >= 2 ? 2 : cards.length); i++) {
   renderTemp(filmCatalogExtraConts[0], getTempCard(topRatedCards[i]), `beforeend`);
   renderTemp(filmCatalogExtraConts[1], getTempCard(topCommentsCards[i]), `beforeend`);
 }
@@ -75,8 +76,8 @@ addPopUpFilmCards(filmCatalogExtraConts[1], topCommentsCards);
 
 // Функция добавление карточек фильмов к основной каталог
 const addCardsMainCatalog = (arr) => {
-  for (let i = CARD_COUNT - 1; i >= 0; i--) {
-    renderTemp(filmCatalogCont, getTempCard(arr[i]), `afterbegin`);
+  for (let i = 0; i < Math.min(arr.length, TASK_COUNT_PER_STEP); i++) {
+    renderTemp(filmCatalogCont, getTempCard(arr[i]), `beforeend`);
   }
 };
 
@@ -86,8 +87,47 @@ addCardsMainCatalog(cards);
 // Навешивания попапа на карточки основного каталога
 addPopUpFilmCards(filmCatalogCont, cards);
 
-// Ренлеринг кнопки больше в каталоге карточек
-renderTemp(filmCatalogCont, getTempCatalogButMore(), `beforeend`);
+// Функция проверки длины массива карточек фильмов с последующим навешиванием
+// кнопки еще и добавлением карточек фильмов с попапом для этих карточек
+
+const addButtonMoreCards = (arr) => {
+  if (arr.length > TASK_COUNT_PER_STEP) {
+    let renderedTaskCount = TASK_COUNT_PER_STEP;
+
+    renderTemp(filmCatalog, getTempCatalogButMore(), `beforeend`);
+
+    const loadMoreButton = filmCatalog.querySelector(`.films-list__show-more`);
+
+    loadMoreButton.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+
+      const diff = renderedTaskCount + TASK_COUNT_PER_STEP >= arr.length;
+
+      for (let i = renderedTaskCount; i < (diff ? arr.length : renderedTaskCount + TASK_COUNT_PER_STEP); i++) {
+        renderTemp(filmCatalogCont, getTempCard(arr[i]), `beforeend`);
+      }
+
+      const filmCards = filmCatalogCont.querySelectorAll(`.film-card`);
+
+      for (let i = renderedTaskCount; i < (diff ? arr.length : renderedTaskCount + TASK_COUNT_PER_STEP); i++) {
+        filmCards[i].addEventListener(`click`, () => {
+          renderTemp(footer, getTempCardPop(arr[i]), `afterend`);
+
+          addClosePopUp();
+        });
+      }
+
+      renderedTaskCount += TASK_COUNT_PER_STEP;
+
+      if (renderedTaskCount >= arr.length) {
+        loadMoreButton.remove();
+      }
+    });
+  }
+};
+
+addButtonMoreCards(cards);
+
 // Рендеринг счеткика фильмов в футере
 renderTemp(footerStat, getTempFooterStat(cards === null ? generateFooterStat() : cards.length), `beforeend`);
 
@@ -100,8 +140,12 @@ const addSortToFilter = (arr, button) => {
   button.addEventListener(`click`, () => {
     addActiveClass(sortButtons, `sort__button--active`, button);
     cleanChildElement(filmCatalogCont);
+    if (filmCatalog.querySelector(`.films-list__show-more`)) {
+      filmCatalog.querySelector(`.films-list__show-more`).remove();
+    }
     addCardsMainCatalog(arr);
     addPopUpFilmCards(filmCatalogCont, arr);
+    addButtonMoreCards(arr);
   });
 };
 // Навешивания события фильтровки карточек фильмов в основном каталоге, с открытие

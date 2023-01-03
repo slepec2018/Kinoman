@@ -1,3 +1,5 @@
+import {createElement} from "../utils.js";
+
 const getTempCard = (arr) => {
   const {poster, title, rating, yearCreat, duration, genre, description, comments} = arr;
   return `<article class="film-card">
@@ -19,4 +21,27 @@ const getTempCard = (arr) => {
 </article>`;
 };
 
-export {getTempCard};
+class TempCard {
+  constructor(data) {
+    this._element = null;
+    this._data = data;
+  }
+
+  getTemplate() {
+    return getTempCard(this._data);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
+export {TempCard};

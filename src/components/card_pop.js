@@ -1,4 +1,4 @@
-import {getRandomItemArr, getRandomNumber} from "../utils.js";
+import {getRandomItemArr, getRandomNumber, createElement} from "../utils.js";
 
 // Функция добавления шаблона жанров фильмов
 const addTempGanres = (arr) => {
@@ -218,5 +218,28 @@ const getTempCardPop = (arr) => {
 </section>`;
 };
 
+class TempCardPop {
+  constructor(data) {
+    this._element = null;
+    this._data = data;
+  }
 
-export {getTempCardPop};
+  getTemplate() {
+    return getTempCardPop(this._data);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
+
+export {TempCardPop};

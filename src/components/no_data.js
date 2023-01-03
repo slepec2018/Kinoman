@@ -1,20 +1,17 @@
 import {createElement} from "../utils.js";
 
-const getTempUserProf = (arr) => {
-  return `<section class="header__profile profile">
-  <p class="profile__rating">${arr}</p>
-  <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-</section>`;
+const getTempNoData = () => {
+  return `<h2 class="films-list__title">There are no movies in our database</h2>`;
 };
 
-class TempUserProf {
+class TempNoData {
   constructor(data) {
     this._element = null;
     this._data = data;
   }
 
   getTemplate() {
-    return getTempUserProf(this._data);
+    return getTempNoData();
   }
 
   getElement() {
@@ -30,4 +27,4 @@ class TempUserProf {
   }
 }
 
-export {TempUserProf};
+export {TempNoData};

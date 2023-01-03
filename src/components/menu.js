@@ -1,3 +1,5 @@
+import {createElement} from "../utils.js";
+
 const getTempMenu = () => {
   return `<nav class="main-navigation">
   <div class="main-navigation__items">
@@ -10,4 +12,26 @@ const getTempMenu = () => {
 </nav>`;
 };
 
-export {getTempMenu};
+class TempMenu {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return getTempMenu();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
+export {TempMenu};

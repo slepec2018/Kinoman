@@ -1,3 +1,5 @@
+import {createElement} from "../utils.js";
+
 const getTempCatalogSort = () => {
   return `<ul class="sort">
   <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
@@ -6,4 +8,26 @@ const getTempCatalogSort = () => {
 </ul>`;
 };
 
-export {getTempCatalogSort};
+class TempCatalogSort {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return getTempCatalogSort();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
+export {TempCatalogSort};

@@ -1,16 +1,21 @@
 import {createElement} from "../utils.js";
 
-const getTempCatalogButMore = () => {
-  return `<button class="films-list__show-more">Show more</button>`;
+const getTempMostCommented = () => {
+  return `<section class="films-list--extra">
+  <h2 class="films-list__title">Top rated</h2>
+
+  <div class="films-list__container">
+  </div>
+</section>`;
 };
 
-class TempCatalogButMore {
+class TempMostCommented {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return getTempCatalogButMore();
+    return getTempMostCommented();
   }
 
   getElement() {
@@ -26,4 +31,4 @@ class TempCatalogButMore {
   }
 }
 
-export {TempCatalogButMore};
+export {TempMostCommented};

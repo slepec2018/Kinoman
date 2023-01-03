@@ -115,6 +115,15 @@ const addClosePopUp = () => {
   });
 };
 
+// Функция закрытия попапа карточки фильма по нажатию кнопки Esc
+const onEscKeyDown = (evt) => {
+  if ((evt.key === `Escape` || evt.key === `Esc`) && document.querySelector(`.film-details`)) {
+    evt.preventDefault();
+    const popUp = document.querySelector(`.film-details`);
+    popUp.remove();
+  }
+};
+
 // Функция сортировки массива
 const sortArray = (arr, chapter) => {
   const deepData = JSON.parse(JSON.stringify(arr));
@@ -155,6 +164,41 @@ const getRandomTags = (arr, length) => {
   return Array.from(set);
 };
 
+// Принцип работы прост:
+// 1. создаём пустой div-блок
+// 2. берём HTML в виде строки и вкладываем в этот div-блок, превращая в DOM-элемент
+// 3. возвращаем этот DOM-элемент
+const createElement = (template) => {
+  const newElement = document.createElement(`div`); // 1
+  newElement.innerHTML = template; // 2
+
+  return newElement.firstChild; // 3
+};
+// Единственный нюанс, что HTML в строке должен иметь общую обёртку,
+// то есть быть чем-то вроде <nav><a>Link 1</a><a>Link 2</a></nav>,
+// а не просто <a>Link 1</a><a>Link 2</a>
+
+const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`
+};
+
+const render = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
+};
+
+// Функция добавления кода html в исходный код
+const renderTemp = (container, temp, place) => {
+  container.insertAdjacentHTML(place, temp);
+};
+
 export {
   getRandomItemArr,
   getRandomItemsArray,
@@ -164,7 +208,12 @@ export {
   generateLoremText,
   addClosePopUp,
   sortArray,
+  getRandomArrayPart,
   addActiveClass,
   cleanChildElement,
-  getRandomTags
+  getRandomTags,
+  createElement,
+  render,
+  RenderPosition,
+  onEscKeyDown
 };

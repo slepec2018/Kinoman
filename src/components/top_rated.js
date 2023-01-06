@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import Abstract from "./abstract.js";
 
 const getTempTopRated = () => {
   return `<section class="films-list--extra">
@@ -9,25 +9,10 @@ const getTempTopRated = () => {
 </section>`;
 };
 
-class TempTopRated {
-  constructor() {
-    this._element = null;
-  }
+class TempTopRated extends Abstract {
 
   getTemplate() {
     return getTempTopRated();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

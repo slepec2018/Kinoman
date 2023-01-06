@@ -1,4 +1,4 @@
-import {getRandomNumber} from '../utils.js';
+import {getRandomNumber} from '../utils/common.js';
 
 const userRank = [
   `Junior Jedi`,

@@ -14,15 +14,9 @@ import {generateCardData} from "./mock/card_mock.js";
 import {generateUserProfData} from "./mock/user_prof_mock.js";
 import {generateFooterStat} from "./mock/footer_stat_mock.js";
 
-import {
-  addClosePopUp,
-  sortArray,
-  addActiveClass,
-  cleanChildElement,
-  render,
-  RenderPosition,
-  onEscKeyDown
-} from "./utils.js";
+import {addClosePopUp, cleanChildElement, onEscKeyDown} from "./utils/task.js";
+import {sortArray, addActiveClass} from "./utils/common.js";
+import {render, RenderPosition, remove} from "./utils/render.js";
 
 // Переменные основых блоков верстки
 const header = document.querySelector(`.header`);
@@ -47,9 +41,11 @@ const addPopUpFilmCards = (contSearch, arr) => {
   const filmCards = contSearch.querySelectorAll(`.film-card`);
 
   const giveClosePopUp = (item, count) => {
-    item.addEventListener(`click`, () => {
 
-      render(footer, new TempCardPop(arr[count]).getElement(), RenderPosition.AFTERBEGIN);
+    item.addEventListener(`click`, () => {
+      const cardPopPup = new TempCardPop(arr[count]);
+
+      render(footer, cardPopPup.getElement(), RenderPosition.AFTERBEGIN);
 
       addClosePopUp();
     });
@@ -82,12 +78,11 @@ const addButtonMoreCards = (arr) => {
   if (arr.length > TASK_COUNT_PER_STEP) {
     let renderedTaskCount = TASK_COUNT_PER_STEP;
 
-    render(filmCatalogBasic, new TempCatalogButMore().getElement(), RenderPosition.BEFOREEND);
+    const loadMoreButton = new TempCatalogButMore();
 
-    const loadMoreButton = filmCatalogBasic.querySelector(`.films-list__show-more`);
+    render(filmCatalogBasic, loadMoreButton.getElement(), RenderPosition.BEFOREEND);
 
-    loadMoreButton.addEventListener(`click`, (evt) => {
-      evt.preventDefault();
+    loadMoreButton.setClickHandler(() => {
 
       const diff = renderedTaskCount + TASK_COUNT_PER_STEP >= arr.length;
 
@@ -108,7 +103,7 @@ const addButtonMoreCards = (arr) => {
       renderedTaskCount += TASK_COUNT_PER_STEP;
 
       if (renderedTaskCount >= arr.length) {
-        loadMoreButton.remove();
+        remove(loadMoreButton);
       }
     });
   }

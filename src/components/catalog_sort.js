@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import Abstract from "./abstract.js";
 
 const getTempCatalogSort = () => {
   return `<ul class="sort">
@@ -8,25 +8,10 @@ const getTempCatalogSort = () => {
 </ul>`;
 };
 
-class TempCatalogSort {
-  constructor() {
-    this._element = null;
-  }
+class TempCatalogSort extends Abstract {
 
   getTemplate() {
     return getTempCatalogSort();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

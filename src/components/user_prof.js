@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import Abstract from "./abstract.js";
 
 const getTempUserProf = (arr) => {
   return `<section class="header__profile profile">
@@ -7,26 +7,14 @@ const getTempUserProf = (arr) => {
 </section>`;
 };
 
-class TempUserProf {
+class TempUserProf extends Abstract {
   constructor(data) {
-    this._element = null;
+    super();
     this._data = data;
   }
 
   getTemplate() {
     return getTempUserProf(this._data);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

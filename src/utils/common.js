@@ -105,25 +105,6 @@ const generateLoremText = (numSent) => {
   return text.join(` `);
 };
 
-// Функция закрытия попапа карточки фильма
-const addClosePopUp = () => {
-  const popUp = document.querySelector(`.film-details`);
-  const popUpButtonClose = popUp.querySelector(`.film-details__close-btn`);
-
-  popUpButtonClose.addEventListener(`click`, () => {
-    popUp.remove();
-  });
-};
-
-// Функция закрытия попапа карточки фильма по нажатию кнопки Esc
-const onEscKeyDown = (evt) => {
-  if ((evt.key === `Escape` || evt.key === `Esc`) && document.querySelector(`.film-details`)) {
-    evt.preventDefault();
-    const popUp = document.querySelector(`.film-details`);
-    popUp.remove();
-  }
-};
-
 // Функция сортировки массива
 const sortArray = (arr, chapter) => {
   const deepData = JSON.parse(JSON.stringify(arr));
@@ -142,15 +123,6 @@ const addActiveClass = (arr, classActiv, itemActiv) => {
   itemActiv.classList.add(classActiv);
 };
 
-// Функция чистки блока от елементов
-const cleanChildElement = (cont) => {
-  const childElements = cont.querySelectorAll(`.film-card`);
-
-  for (const element of childElements) {
-    element.remove();
-  }
-};
-
 // Функция генерирования массива с заданной длинной, исключающая повторов
 const getRandomTags = (arr, length) => {
   let set = new Set();
@@ -164,56 +136,15 @@ const getRandomTags = (arr, length) => {
   return Array.from(set);
 };
 
-// Принцип работы прост:
-// 1. создаём пустой div-блок
-// 2. берём HTML в виде строки и вкладываем в этот div-блок, превращая в DOM-элемент
-// 3. возвращаем этот DOM-элемент
-const createElement = (template) => {
-  const newElement = document.createElement(`div`); // 1
-  newElement.innerHTML = template; // 2
-
-  return newElement.firstChild; // 3
-};
-// Единственный нюанс, что HTML в строке должен иметь общую обёртку,
-// то есть быть чем-то вроде <nav><a>Link 1</a><a>Link 2</a></nav>,
-// а не просто <a>Link 1</a><a>Link 2</a>
-
-const RenderPosition = {
-  AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`
-};
-
-const render = (container, element, place) => {
-  switch (place) {
-    case RenderPosition.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case RenderPosition.BEFOREEND:
-      container.append(element);
-      break;
-  }
-};
-
-// Функция добавления кода html в исходный код
-const renderTemp = (container, temp, place) => {
-  container.insertAdjacentHTML(place, temp);
-};
-
 export {
+  getRandomNumber,
   getRandomItemArr,
   getRandomItemsArray,
-  getRandomNumber,
+  getRandomArrayPart,
   getRandomNumberPoint,
   getNumberWithLeadZero,
   generateLoremText,
-  addClosePopUp,
   sortArray,
-  getRandomArrayPart,
   addActiveClass,
-  cleanChildElement,
-  getRandomTags,
-  createElement,
-  render,
-  RenderPosition,
-  onEscKeyDown
+  getRandomTags
 };

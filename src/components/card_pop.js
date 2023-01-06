@@ -1,4 +1,5 @@
-import {getRandomItemArr, getRandomNumber, createElement} from "../utils.js";
+import {getRandomItemArr, getRandomNumber} from "../utils/common.js";
+import Abstract from "./abstract.js";
 
 // Функция добавления шаблона жанров фильмов
 const addTempGanres = (arr) => {
@@ -218,26 +219,14 @@ const getTempCardPop = (arr) => {
 </section>`;
 };
 
-class TempCardPop {
+class TempCardPop extends Abstract {
   constructor(data) {
-    this._element = null;
+    super();
     this._data = data;
   }
 
   getTemplate() {
     return getTempCardPop(this._data);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

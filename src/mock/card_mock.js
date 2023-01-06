@@ -6,7 +6,7 @@ import {
   getNumberWithLeadZero,
   generateLoremText,
   getRandomTags
-} from '../utils.js';
+} from '../utils/common.js';
 
 const cardTitles = [
   `The Dark Knight`,

@@ -26,4 +26,30 @@ const cleanChildElement = (cont) => {
   }
 };
 
-export {addClosePopUp, onEscKeyDown, cleanChildElement};
+const sortByDate = (taskA, taskB) => {
+  if (taskA.yearCreat > taskB.yearCreat) {
+    return -1;
+  }
+
+  if (taskB.yearCreat > taskA.yearCreat) {
+    return 1;
+  }
+
+
+  return 0;
+};
+
+const sortByRating = (taskA, taskB) => {
+  if (taskA.rating > taskB.rating) {
+    return -1;
+  }
+
+  if (taskB.rating > taskA.rating) {
+    return 1;
+  }
+
+
+  return 0;
+};
+
+export {addClosePopUp, onEscKeyDown, cleanChildElement, sortByDate, sortByRating};

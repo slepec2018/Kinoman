@@ -140,14 +140,22 @@ const cartAgeRating = [
   18,
 ];
 
+// Date.now() и Math.random() - плохие решения для генерации id
+// в "продуктовом" коде, а для моков самое то.
+// Для "продуктового" кода используйте что-то понадежнее,
+// вроде nanoid - https://github.com/ai/nanoid
+const generateId = () => parseInt(Math.random() * 1000000, 10) + Date.now();
+
 const generateCardData = () => {
-  let id = getRandomNumber(0, cardImages.length - 1);
+  const id = getRandomNumber(0, cardImages.length - 1);
+  const yearCreat = getRandomNumber(1988, 2022);
 
   return {
+    id: generateId(),
     poster: cardImages[id],
     title: cardTitles[id],
     rating: getRandomNumberPoint(4, 10, 1),
-    yearCreat: getRandomNumber(1988, 2022),
+    yearCreat,
     duration: `${getRandomNumber(0, 3)}h ${ getNumberWithLeadZero(getRandomNumber(0, 59))}m`,
     genre: getRandomTags(cartGenres, 3),
     description: getRandomItemsArray(cardTextSentenses, getRandomNumber(1, 3)),
@@ -158,10 +166,12 @@ const generateCardData = () => {
     director: cartDirectors[id],
     screenwriters: getRandomItemsArray(cartScreenwriters, getRandomNumber(1, 4)),
     actors: getRandomItemsArray(cartActors, getRandomNumber(1, 4)),
-    dateCreat: getRandomNumber(1988, 2022),
     country: getRandomItemArr(cartCountry),
     fullDescription: generateLoremText(getRandomNumber(10, 20)),
-    ageRating: getRandomItemArr(cartAgeRating)
+    ageRating: getRandomItemArr(cartAgeRating),
+    watchlist: false,
+    watched: false,
+    favorite: false
   };
 };
 

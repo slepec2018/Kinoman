@@ -1,5 +1,5 @@
 import {getRandomItemArr, getRandomNumber} from "../utils/common.js";
-import Abstract from "./abstract.js";
+import {Smart} from "./smart.js";
 
 // Функция добавления шаблона жанров фильмов
 const addTempGanres = (arr) => {
@@ -42,11 +42,14 @@ const getTempCardPop = (arr) => {
     director,
     screenwriters,
     actors,
-    dateCreat,
+    yearCreat,
     duration,
     country,
     fullDescription,
-    genre
+    genre,
+    watchlist,
+    watched,
+    favorite
   } = arr;
 
   return `<section class="film-details">
@@ -89,7 +92,7 @@ const getTempCardPop = (arr) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${addDateTemp(dateCreat)}</td>
+              <td class="film-details__cell">${addDateTemp(yearCreat)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>
@@ -100,7 +103,7 @@ const getTempCardPop = (arr) => {
               <td class="film-details__cell">${country}</td>
             </tr>
             <tr class="film-details__row">
-              <td class="film-details__term">Genres</td>
+              <td class="film-details__term">${genre.length === 1 ? `Genre` : `Genres`}</td>
               <td class="film-details__cell">
                 ${addTempGanres(genre)}
               </td>
@@ -114,13 +117,13 @@ const getTempCardPop = (arr) => {
       </div>
 
       <section class="film-details__controls">
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
+        <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${watchlist ? `checked` : ``}>
         <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
+        <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${watched ? `checked` : ``}>
         <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
+        <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${favorite ? `checked` : ``}>
         <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
       </section>
     </div>
@@ -219,14 +222,90 @@ const getTempCardPop = (arr) => {
 </section>`;
 };
 
-class TempCardPop extends Abstract {
+class TempCardPop extends Smart {
   constructor(data) {
     super();
     this._data = data;
+
+    this._clickHandler = this._clickHandler.bind(this);
+    this._addToWatchList = this._addToWatchList.bind(this);
+    this._addToAlreadyWatched = this._addToAlreadyWatched.bind(this);
+    this._addToFavorites = this._addToFavorites.bind(this);
+    this._changeEmoji = this._changeEmoji.bind(this);
+
+    this._setInnerHandlers();
+  }
+
+  reset(card) {
+    this.updateData(
+        card
+    );
   }
 
   getTemplate() {
     return getTempCardPop(this._data);
+  }
+
+  _clickHandler(evt) {
+    evt.preventDefault();
+    // 3. А внутри абстрактного обработчика вызовем колбэк
+    this._callback.click(this._data);
+  }
+
+  setCardHandler(callback) {
+    this._callback.click = callback;
+
+    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, this._clickHandler);
+  }
+
+  restoreHandlers() {
+    this._setInnerHandlers();
+    this.setCardHandler(this._callback.click);
+  }
+
+  _setInnerHandlers() {
+    this.getElement()
+      .querySelector(`.film-details__control-label--watchlist`)
+      .addEventListener(`click`, this._addToWatchList);
+    this.getElement()
+      .querySelector(`.film-details__control-label--watched`)
+      .addEventListener(`click`, this._addToAlreadyWatched);
+    this.getElement()
+      .querySelector(`.film-details__control-label--favorite`)
+      .addEventListener(`click`, this._addToFavorites);
+
+    this._emojiList = this.getElement().querySelectorAll(`.film-details__emoji-item`);
+    for (const item of this._emojiList) {
+      item.addEventListener(`change`, this._changeEmoji);
+    }
+  }
+
+  _addToWatchList(evt) {
+    evt.preventDefault();
+    this.updateData({
+      watchlist: !this._data.watchlist
+    }, false);
+  }
+
+  _addToAlreadyWatched(evt) {
+    evt.preventDefault();
+    this.updateData({
+      watched: !this._data.watched
+    }, false);
+  }
+
+  _addToFavorites(evt) {
+    evt.preventDefault();
+    this.updateData({
+      favorite: !this._data.favorite
+    }, false);
+  }
+
+  _changeEmoji(evt) {
+    const parentEmoji = this.getElement().querySelector(`.film-details__add-emoji-label`);
+    parentEmoji.innerHTML = ``;
+
+    parentEmoji.insertAdjacentHTML(`afterbegin`, `<img src="images/emoji/${evt.target.value}.png" width="55" height="55" alt="emoji-smile">`);
   }
 }
 
